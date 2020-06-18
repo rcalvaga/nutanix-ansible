@@ -1,0 +1,29 @@
+{
+"metadata": {
+"kind":"vm"
+},
+"spec": {
+"name":"test",
+"resources": {
+"disk_list": [
+{
+"data_source_reference": {
+"kind": "image",
+"uuid": "a91f56a0-2133-4080-b6b4-60961e94dad7"
+},
+"device_properties": {
+"device_type": "DISK",
+"disk_address": {
+"adapter_type": "SCSI",
+"device_index": 0
+}
+}
+}
+],
+"memory_size_mib": 1024,
+"num_sockets": 1,
+"num_vcpus_per_socket": 1,
+"power_state": "OFF"
+}
+}
+}

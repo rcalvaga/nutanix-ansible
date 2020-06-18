@@ -1,0 +1,31 @@
+---
+
+- name: Get some info from hosts
+  hosts: localhost
+  gather_facts: False
+  connection: local
+ 
+  tasks:
+    - name: Get hosts
+      uri:
+        url: "{{ base_url }}/hosts/list"
+        body:
+          filter: ''
+          kind: host
+          sort_order: ASCENDING
+          offset: 0
+          length: 1000
+          sort_attribute: ''
+        validate_certs: no
+        force_basic_auth: yes
+        method: POST
+        status_code: 200
+        user: "{{ username }}"
+        password: "{{ password }}"
+        body_format: json
+        return_content: yes
+      register: hostinfo
+
+    - name: Output info
+      debug: 
+        var: hostinfo

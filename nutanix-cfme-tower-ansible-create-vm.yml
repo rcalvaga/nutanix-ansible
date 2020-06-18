@@ -1,0 +1,45 @@
+---
+- name: Create VM
+  hosts: localhost
+  gather_facts: False
+  connection: local
+
+  tasks:
+    - name: create VM
+      uri:
+        url: "{{ base_url }}/vms"
+        validate_certs: no
+        force_basic_auth: yes
+        method: POST
+        status_code: 202
+        user: "{{ username }}"
+        password: "{{ password }}"
+        return_content: yes
+        body: 
+          api_version: '3.1.0'
+          metadata:
+            kind: vm
+          spec:
+            cluster_reference:
+              kind: cluster
+              uuid: "{{ cluster_uuid }}"
+            name: "{{ vm_name }}"
+            resources:
+              disk_list:
+              - data_source_reference:
+                  kind: image
+                  uuid: "{{ image_uuid }}"
+#              nic_list:
+#              - ip_endpoint_list:
+#                - ip: "{{ vm_ip }}"
+#                subnet_reference:
+#                  kind: subnet
+#                  uuid: "{{ subnet_uuid }}"
+              num_sockets: "{{ num_sockets }}"
+              num_vcpus_per_socket: "{{ num_vcpus_per_socket }}"
+              memory_size_mib: "{{ memory_size_mib }}"
+              power_state: "{{ power_state }}"
+              guest_customization:
+                cloud_init:
+                  user_data: "{{ lookup('template','templates/vm-cloud-init.yml.j2') | b64encode }}"
+        body_format: json
